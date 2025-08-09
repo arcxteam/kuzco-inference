@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  kuzco-main:
+    container_name: kuzco-inference
+    build: .
+    networks:
+      - kuzco-network
+    restart: always
+    env_file: .env
+    environment:
+      NODE_ENV: "production"
+      CODE: "${WORKER_CODE}"
+      VIKEY_API_KEY: "${VIKEY_API_KEY}"
+
+networks:
+  kuzco-network:
+    driver: bridge
