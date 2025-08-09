@@ -61,3 +61,13 @@ sequenceDiagram
     VikeyAPI->>KuzcoWorker: Send Response
     KuzcoWorker->>Client: Deliver Final Result
 ```
+
+## Setup Prover
+Copy .env from example
+```bash
+cp .env.example .env
+```
+Edit `.env`:
+```
+nano .env
+```
