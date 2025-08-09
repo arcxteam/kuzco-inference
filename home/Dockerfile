@@ -9,7 +9,7 @@ RUN mkdir -p /app/cache
 RUN mkdir -p vikey-inference && cd vikey-inference \
     && wget https://github.com/direkturcrypto/vikey-inference/raw/main/vikey-inference-linux -O vikey-inference-linux \
     && chmod +x vikey-inference-linux \
-    && echo '["llama-3.2-8b-instruct"]' > models.json
+    && echo '["llama3.2-8b-instruct"]' > models.json
 
 WORKDIR /app
 
