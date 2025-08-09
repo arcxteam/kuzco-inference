@@ -44,7 +44,6 @@ graph TD
     style T fill:#F44336,stroke:#D32F2F
 ```
 
-
 ## Sequence Interaction an Inferences I/O APIs
 
 ```mermaid
