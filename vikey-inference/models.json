@@ -4,7 +4,7 @@
   "deepseek-r1:8b",
   "deepseek-r1:14b",
   "qwen2.5:7b-instruct-fp16",
-  "llama-3.2-8b-instruct",
+  "llama3.2-8b-instruct",
   "llama3.1:8b-instruct-q4_K_M",
   "llama3.3:70b-instruct-fp16",
   "llama3.3:70b-instruct-q8_0",
