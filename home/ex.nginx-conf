@@ -1,0 +1,34 @@
+limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
+
+server {
+    listen 80;
+    server_name kuzco-inference.greyscope.xyz;
+    # Return 404 root
+    location / {
+        return 404;
+    }
+
+    # Proxy API Ollama
+    location /api/ {
+        proxy_pass http://vikey-inference:11434/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Authorization "Bearer $VIKEY_API_KEY";
+        add_header Content-Type "application/json";
+        limit_req zone=one burst=5;
+        access_log off;
+    }
+
+    # Proxy API OpenAI
+    location /v1/ {
+        proxy_pass http://vikey-inference:11434/v1/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Authorization "Bearer $VIKEY_API_KEY";
+        add_header Content-Type "application/json";
+        limit_req zone=one burst=5;
+        access_log off;
+    }
+}
