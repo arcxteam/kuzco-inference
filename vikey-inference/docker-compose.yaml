@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   vikey-inference:
+    container_name: vikey-inference
     build:
       context: .
       args:
