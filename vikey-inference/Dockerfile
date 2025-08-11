@@ -13,7 +13,6 @@ ARG NODE_PORT=11434
 RUN wget https://github.com/direkturcrypto/vikey-inference/raw/main/vikey-inference-linux -O vikey-inference-linux \
     && chmod +x vikey-inference-linux
 
-COPY vikey-inference-linux .
 COPY models.json .
 COPY .env .env
 
