@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   vikey-inference:
     build:
@@ -5,6 +7,8 @@ services:
       args:
         - VIKEY_API_KEY=${VIKEY_API_KEY:-your_default_api_key_here}
         - NODE_PORT=${NODE_PORT:-11434}
+        # - EMBEDDING_API_URL=${EMBEDDING_API_URL:-https://kuzco-inference.greyscope.xyz/v1}
+        # - EMBEDDING_API_KEY=${EMBEDDING_API_KEY:-your_embedding_key_here}
     ports:
       - "${NODE_PORT:-11434}:${NODE_PORT:-11434}"
     restart: unless-stopped
@@ -13,5 +17,6 @@ services:
     environment:
       - VIKEY_API_KEY=${VIKEY_API_KEY:-your_default_api_key_here}
       - NODE_PORT=${NODE_PORT:-11434}
-      - LLAMAEDGE_ENABLED=${LLAMAEDGE_ENABLED:-false}
-      # - GAIA_CONFIG_PATH=${GAIA_CONFIG_PATH:-./config} 
+      # - LLAMAEDGE_ENABLED=${LLAMAEDGE_ENABLED:-false}
+      # - EMBEDDING_API_URL=${EMBEDDING_API_URL:-https://kuzco-inference.greyscope.xyz/v1}
+      # - EMBEDDING_API_KEY=${EMBEDDING_API_KEY:-your_embedding_key_here}
