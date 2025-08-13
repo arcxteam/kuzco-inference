@@ -39,7 +39,6 @@ setup_worker() {
         cd "$INSTANCE_DIR" || exit
         dbus-uuidgen > machine-id
 
-        # Create .ollama and set permissions
         mkdir -p .ollama
         chmod -R 777 .ollama
 
