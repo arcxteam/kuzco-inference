@@ -9,7 +9,7 @@ RUN mkdir -p /app/cache
 RUN git clone https://github.com/arcxteam/kuzco-inference && cd kuzco-inference/vikey-inference \
     && wget https://github.com/direkturcrypto/vikey-inference/raw/main/vikey-inference-linux -O vikey-inference-linux \
     && chmod +x vikey-inference-linux \
-    && echo '["llama3.2:3b-instruct-fp16"]' > models.json
+    && echo '["llama3.2:1b-instruct-fp16"]' > models.json
 
 WORKDIR /app
 
