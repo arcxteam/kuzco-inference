@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y curl systemd lsof procps git wget && rm
 WORKDIR /app
 RUN mkdir -p /app/cache
 
-# Clone repo & download binary
+# download binary
 RUN git clone https://github.com/arcxteam/kuzco-inference && cd kuzco-inference/vikey-inference \
     && wget https://github.com/direkturcrypto/vikey-inference/raw/main/vikey-inference-linux -O vikey-inference-linux \
     && chmod +x vikey-inference-linux \
