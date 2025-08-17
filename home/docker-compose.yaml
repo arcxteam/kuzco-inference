@@ -12,6 +12,7 @@ services:
     environment:
       NODE_ENV: "production"
       CODE: "${WORKER_CODE}"
+      WORKER_NAME: "${WORKER_NAME}"
       VIKEY_API_KEY: "${VIKEY_API_KEY}"
 
 networks:
