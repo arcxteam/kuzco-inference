@@ -1,3 +1,32 @@
+## Sequence Interaction an Inferences I/O APIs
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant KuzcoWorker
+    participant VikeyAPI
+    participant AIModel
+    
+    Client->>KuzcoWorker: Request AI Service
+    KuzcoWorker->>VikeyAPI: Call Inference API
+    VikeyAPI->>AIModel: Process Request
+    AIModel->>VikeyAPI: Return Inference Result
+    VikeyAPI->>KuzcoWorker: Send API Response
+    KuzcoWorker->>Client: Deliver Final Result
+```
+
+## Setup Prover
+Copy .env from example
+```bash
+cp .env.example .env
+```
+Edit `.env`:
+```
+nano .env
+```
+
+## Diagram Flowchart distribution
+
 ```mermaid
 graph TD
     A[USER] --> B[RUNNER]
@@ -42,31 +71,4 @@ graph TD
     style Q fill:#FF9800,stroke:#E65100
     style R fill:#9C27B0,stroke:#6A1B9A
     style T fill:#F44336,stroke:#D32F2F
-```
-
-## Sequence Interaction an Inferences I/O APIs
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant KuzcoWorker
-    participant VikeyAPI
-    participant AIModel
-    
-    Client->>KuzcoWorker: Request AI Service
-    KuzcoWorker->>VikeyAPI: Forward Request
-    VikeyAPI->>AIModel: Process Inference
-    AIModel->>VikeyAPI: Return Result
-    VikeyAPI->>KuzcoWorker: Send Response
-    KuzcoWorker->>Client: Deliver Final Result
-```
-
-## Setup Prover
-Copy .env from example
-```bash
-cp .env.example .env
-```
-Edit `.env`:
-```
-nano .env
 ```
