@@ -1,6 +1,6 @@
 FROM debian:stable-slim
 
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ ARG NODE_PORT=11434
 # ARG EMBEDDING_API_KEY=your_embedding_key_here
 
 # Download binary
-RUN wget https://github.com/direkturcrypto/vikey-inference/raw/main/vikey-inference-linux -O vikey-inference-linux \
+RUN wget https://github.com/arcxteam/kuzco-inference/releases/download/v1.0.0/vikey-inference-linux -O vikey-inference-linux \
     && chmod +x vikey-inference-linux
 
 COPY models.json .
