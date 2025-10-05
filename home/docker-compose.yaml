@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   kuzco-main:
     container_name: kuzco-inference
-    image: zkproxy/kuzco-vikey
+    image: zkproxy/kuzco-vikey # optional
     build: .
     networks:
       - kuzco-network
