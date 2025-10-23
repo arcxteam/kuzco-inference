@@ -18,7 +18,6 @@ RUN curl -fsSL https://devnet.inference.net/install.sh | sh
 COPY ./start.sh /usr/local/bin/inference-runtime
 COPY ./execute.sh /app/execute.sh
 COPY .env .env
-COPY ./monitoring /app/monitoring
 
 RUN chmod +x /app/execute.sh
 RUN chmod +x /usr/local/bin/inference-runtime
