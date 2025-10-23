@@ -13,7 +13,7 @@ if [ "$1" == "serve" ]; then
         chmod +x vikey-inference-linux
     fi
     
-    echo "Running LLModels Inference Kuzco using Vikey-API Proxy"
+    echo "Start Running LLModels for Kuzco Inference w/ Proxy VikeyAPI"
     cd "$BINARY_DIR"
     NODE_PORT=14444 DEFAULT_MODEL=llama-3.2-3b-instruct-promo ./vikey-inference-linux > vikey.log 2>&1
 else
