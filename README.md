@@ -1,7 +1,6 @@
 # A Comprehensive Guide - Running Kuzco Inference with CPU by API Proxy (Ollama or OpenAI)
 
-
-## Inferences System Data Sequence Diagram
+## (1) Inferences System Data Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -18,7 +17,7 @@ sequenceDiagram
     KuzcoWorker->>Client: Deliver Final Result
 ```
 
-## Structure Directory of File
+## (2) Structure Directory of File
 
 ```diff
 /kuzco-inference
@@ -49,6 +48,31 @@ sequenceDiagram
 │   └── vikey-inference-linux            # File binary for linux
 │
 ├── README.md
+```
+
+---
+
+## Initial Requirements
+
+| Requirement     | Minimum                |
+| :----------     | :--------------------  |
+| **Linux**       | Ubuntu 20 - 22 - 24 LTS          |
+| **Mac**         | Chip M1, M2, M3, M4              |
+| **CPU**         | vCores 8 with 8GB RAM - more     |      
+| **STORAGE**     | Up 50GB - 99GB - more spaces     |
+
+## Dashboard Registration
+
+### Register and Obtain an API Key
+- Visit the dashboard & sign up using an email:
+- Navigate to the `API-KEYS` section.
+- Create a new key `wsk-xxx` **SAVE SAVE SAVE**
+- Copy the key you can create multiple keys, **if forget save generate again**
+- 
+## Clone Repository
+
+```bash
+git clone https://github.com/arcxteam/kuzco-inference.git
 ```
 
 ## Config Account
