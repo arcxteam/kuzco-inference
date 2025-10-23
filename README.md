@@ -1,4 +1,7 @@
-## Sequence Interaction an Inferences I/O APIs
+# A Comprehensive Guide - Running Kuzco Inference with CPU by API Proxy (Ollama or OpenAI)
+
+
+## Inferences System Data Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -15,7 +18,7 @@ sequenceDiagram
     KuzcoWorker->>Client: Deliver Final Result
 ```
 
-## Structure of Directory File
+## Structure Directory of File
 
 ```diff
 /kuzco-inference
@@ -48,7 +51,8 @@ sequenceDiagram
 ├── README.md
 ```
 
-## Setup Prover
+## Config Account
+
 Copy .env from example
 ```bash
 cp .env.example .env
@@ -58,7 +62,7 @@ Edit `.env`:
 nano .env
 ```
 
-## Diagram Flowchart distribution
+## Flowchart Distribution
 
 ```mermaid
 graph TD
