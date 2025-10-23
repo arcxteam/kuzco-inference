@@ -15,6 +15,39 @@ sequenceDiagram
     KuzcoWorker->>Client: Deliver Final Result
 ```
 
+## Structure of Directory File
+
+```diff
+/kuzco-inference
+├──.dockerignore
+├──.ignore
+│
+├── /home
+│   ├── monitoring/
+│   │   ├── extract_log.py
+│   │   ├── index.html
+│   │   ├── monitor_server.py
+│   │   └── inference_results.json
+│
+│   ├── .env
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+│   ├── ex.nginx-conf
+│   ├── execute.sh
+│   └── start.sh
+│
+├── /vikey-inference
+│   ├── .env
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+│   ├── models.json
+│   └── vikey-inference-linux            # File binary for linux
+│
+├── README.md
+```
+
 ## Setup Prover
 Copy .env from example
 ```bash
