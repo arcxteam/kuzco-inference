@@ -1,6 +1,6 @@
 FROM debian:stable-slim
 
-RUN apt-get update && apt-get install -y wget curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget git curl python3 python3-requests && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
