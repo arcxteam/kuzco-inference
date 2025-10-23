@@ -1,0 +1,11 @@
+services:
+  dashboard:
+    build: .
+    container_name: kuzco-dashboard
+    ports:
+      - "5050:5050"
+    network_mode: host
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
