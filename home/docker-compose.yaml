@@ -11,8 +11,12 @@ services:
       NODE_ENV: "production"
       CODE: "${WORKER_CODE}"
       WORKER_NAME: "${WORKER_NAME}"
-      # GPU0_UID: "${GPU0_UID}"
       VIKEY_API_KEY: "${VIKEY_API_KEY}"
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./kuzco.log:/app/kuzco-inference/vikey-inference/kuzco.log
+      - ./home/monitoring:/app/monitoring
 
 networks:
   kuzco-network:
