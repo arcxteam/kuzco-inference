@@ -12,11 +12,6 @@ services:
       CODE: "${WORKER_CODE}"
       WORKER_NAME: "${WORKER_NAME}"
       VIKEY_API_KEY: "${VIKEY_API_KEY}"
-    ports:
-      - "5050:5050"
-    volumes:
-      - ./kuzco.log:/app/kuzco-inference/vikey-inference/kuzco.log
-      - ./home/monitoring:/app/monitoring
 
 networks:
   kuzco-network:
