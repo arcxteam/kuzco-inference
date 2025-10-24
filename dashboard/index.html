@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuzco & Vikey Inference Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Geist Mono', monospace;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.light {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #f0552f;
+        }
+        p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #b0b0b0;
+        }
+        .toggle-btn {
+            background-color: #1c71f0;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #f0552f;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .grid-container > div {
+            max-height: 400px; /* Batas tinggi untuk scroll */
+            overflow-y: auto; /* Aktifkan scroll vertikal */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #2a2a2a;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        body.light table {
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 0.6rem;
+            text-align: center;
+            white-space: nowrap; /* Cegah teks membungkus */
+        }
+        body.light th, body.light td {
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        tr:nth-child(even) {
+            background-color: #333;
+        }
+        body.light tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #555;
+            transition: background-color 0.2s;
+        }
+        body.light tr:hover {
+            background-color: #ddd;
+        }
+        .status-completed {
+            color: #4CAF50;
+        }
+        .status-processing, .status-heartbeat, .status-other, .status-no-activity {
+            color: #ff4444;
+        }
+        footer {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #b0b0b0;
+        }
+        body.light footer {
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.5rem; }
+            p, .toggle-btn { font-size: 0.8rem; }
+            table { font-size: 0.7rem; }
+            th, td { padding: 0.4rem; }
+            .grid-container { gap: 1rem; }
+            .grid-container > div { max-height: 300px; }
+        }
+        @media (max-width: 480px) {
+            table { font-size: 0.65rem; }
+            th, td { padding: 0.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-cube fa-spin-pulse"></i> Kuzco Inference Dashboard</h1>
+        <p>Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Data from docker logs</p>
+        <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon fa-beat-fade"></i> Theme Mode</button>
+        
+        <div class="grid-container">
+            <!-- Grid 1: Kuzco Log -->
+            <div>
+                <h2><i class="fa-solid fa-cube fa-spin"></i> Kuzco Inference Dashboard <i class="fa-solid fa-cube fa-spin fa-spin-reverse"></i></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Inbox ID</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                            <th>Message</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kuzco-results"></tbody>
+                </table>
+            </div>
+            
+            <!-- Grid 2: Vikey Dashboard -->
+            <div>
+                <h2><i class="fa-solid fa-layer-group fa-spin"></i> Vikey AI LLM Dashboard <i class="fa-solid fa-layer-group fa-spin fa-spin-reverse"></i></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Model</th>
+                            <th>I/Token</th>
+                            <th>O/Token</th>
+                            <th>Cost</th>
+                            <th>Endpoint</th>
+                            <th>Status</th>
+                            <th>Inbox ID</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vikey-results"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer>
+            &copy; <span id="year"></span> Greyscope&Co. All rights reserved.
+        </footer>
+    </div>
+    
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            const btn = document.querySelector('.toggle-btn');
+            btn.innerHTML = document.body.classList.contains('light') 
+                ? '<i class="fa-solid fa-sun fa-beat-fade"></i> Theme Mode' 
+                : '<i class="fa-solid fa-moon fa-beat-fade"></i> Theme Mode';
+        }
+
+        // Load data
+        function loadResults() {
+            fetch('inference_results.json?' + Date.now())
+                .then(response => response.json())
+                .then(data => {
+                    const kuzcoTbody = document.getElementById('kuzco-results');
+                    const vikeyTbody = document.getElementById('vikey-results');
+                    kuzcoTbody.innerHTML = '';
+                    vikeyTbody.innerHTML = '';
+
+                    data.forEach(item => {
+                        const statusClass = item.status.toLowerCase().replace(/ /g, '-');
+
+                        // Grid 1: Kuzco (semua log)
+                        const kuzcoRow = document.createElement('tr');
+                        kuzcoRow.innerHTML = `
+                            <td>${item.inbox}</td>
+                            <td class="status-${statusClass}">${item.status}</td>
+                            <td>${item.timestamp}</td>
+                            <td>${item.message}</td>
+                            <td>${item.action}</td>
+                        `;
+                        kuzcoTbody.appendChild(kuzcoRow);
+
+                        // Grid 2: Vikey (hanya Completed)
+                        if (item.status === 'Completed') {
+                            const vikeyRow = document.createElement('tr');
+                            vikeyRow.innerHTML = `
+                                <td>${item.date}</td>
+                                <td>${item.model}</td>
+                                <td>${item.input_tokens}</td>
+                                <td>${item.output_tokens}</td>
+                                <td>${item.cost}</td>
+                                <td>${item.endpoint}</td>
+                                <td class="status-${statusClass}">${item.status}</td>
+                                <td>${item.inbox}</td>
+                                <td>${item.timestamp}</td>
+                            `;
+                            vikeyTbody.appendChild(vikeyRow);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading results:', error);
+                    document.getElementById('kuzco-results').innerHTML = '<tr><td colspan="5">Error: <i class="fa-solid fa-spinner fa-spin-pulse"></i> Loading data</td></tr>';
+                    document.getElementById('vikey-results').innerHTML = '<tr><td colspan="9">Error: <i class="fa-solid fa-spinner fa-spin-pulse"></i> Loading data</td></tr>';
+                });
+        }
+
+        loadResults();
+        setInterval(loadResults, 10000); // Update setiap 10 detik
+    </script>
+</body>
+</html>
