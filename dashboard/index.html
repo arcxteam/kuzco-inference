@@ -138,7 +138,7 @@
 <body>
     <div class="container">
         <h1><i class="fa-solid fa-cube fa-spin-pulse"></i> Kuzco Inference Dashboard</h1>
-        <p>Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Data from docker logs</p>
+        <p>Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Realtime data source logging</p>
         <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon fa-beat-fade"></i> Theme Mode</button>
         
         <div class="grid-container">
@@ -211,7 +211,7 @@
                     data.forEach(item => {
                         const statusClass = item.status.toLowerCase().replace(/ /g, '-');
 
-                        // Grid 1: Kuzco (semua log)
+                        // Grid 1: Kuzco
                         const kuzcoRow = document.createElement('tr');
                         kuzcoRow.innerHTML = `
                             <td>${item.inbox}</td>
@@ -222,7 +222,7 @@
                         `;
                         kuzcoTbody.appendChild(kuzcoRow);
 
-                        // Grid 2: Vikey (hanya Completed)
+                        // Grid 2: Vikey
                         if (item.status === 'Completed') {
                             const vikeyRow = document.createElement('tr');
                             vikeyRow.innerHTML = `
@@ -248,7 +248,7 @@
         }
 
         loadResults();
-        setInterval(loadResults, 10000); // Update setiap 10 detik
+        setInterval(loadResults, 10000); // Update 10s
     </script>
 </body>
 </html>
