@@ -8,7 +8,6 @@ from extract_log import extract_kuzco_results
 
 app = Flask(__name__, static_folder='.')
 
-# Logging console
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -38,7 +37,7 @@ def background_worker():
     while True:
         try:
             now = time.time()
-            # Reset 4 jam
+            # Reset 4h
             if now - last_reset >= RESET_INTERVAL:
                 if os.path.exists(JSON_FILE):
                     backup = f"inference_results_{int(last_reset)}.json"
