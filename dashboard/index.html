@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuzco & Vikey Inference Dashboard</title>
+    <title>Kuzco Inferences Dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100;200;300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
@@ -137,14 +137,14 @@
 </head>
 <body>
     <div class="container">
-        <h1><i class="fa-solid fa-cube fa-spin-pulse"></i> Kuzco Inference Dashboard</h1>
-        <p>Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Realtime data source logging</p>
-        <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon fa-beat-fade"></i> Theme Mode</button>
+        <h1><i class="fa-solid fa-cube fa-spin-pulse"></i> Kuzco Inference Dashboard </h1>
+        <p> Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Realtime data sources </p>
+        <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon fa-beat-fade"></i> Select Mode </button>
         
         <div class="grid-container">
             <!-- Grid 1: Kuzco Log -->
             <div>
-                <h2><i class="fa-solid fa-cube fa-spin"></i> Kuzco Inference Dashboard <i class="fa-solid fa-cube fa-spin fa-spin-reverse"></i></h2>
+                <h2><i class="fa-solid fa-cube fa-spin"></i> Kuzco Inference <i class="fa-solid fa-cube fa-spin fa-spin-reverse"></i></h2>
                 <table>
                     <thead>
                         <tr>
@@ -161,7 +161,7 @@
             
             <!-- Grid 2: Vikey Dashboard -->
             <div>
-                <h2><i class="fa-solid fa-layer-group fa-spin"></i> Vikey AI LLM Dashboard <i class="fa-solid fa-layer-group fa-spin fa-spin-reverse"></i></h2>
+                <h2><i class="fa-solid fa-layer-group fa-spin"></i> Vikey AI <i class="fa-solid fa-layer-group fa-spin fa-spin-reverse"></i></h2>
                 <table>
                     <thead>
                         <tr>
@@ -194,8 +194,8 @@
             document.body.classList.toggle('light');
             const btn = document.querySelector('.toggle-btn');
             btn.innerHTML = document.body.classList.contains('light') 
-                ? '<i class="fa-solid fa-sun fa-beat-fade"></i> Theme Mode' 
-                : '<i class="fa-solid fa-moon fa-beat-fade"></i> Theme Mode';
+                ? '<i class="fa-solid fa-sun fa-beat-fade"></i> Light Mode' 
+                : '<i class="fa-solid fa-moon fa-beat-fade"></i> Dark Mode';
         }
 
         // Load data
