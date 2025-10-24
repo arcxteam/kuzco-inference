@@ -12,6 +12,8 @@ services:
       CODE: "${WORKER_CODE}"
       WORKER_NAME: "${WORKER_NAME}"
       VIKEY_API_KEY: "${VIKEY_API_KEY}"
+    volumes:
+      - /var/lib/docker/containers:/host/docker/containers:ro  # Mount log Docker read-only
 
 networks:
   kuzco-network:
