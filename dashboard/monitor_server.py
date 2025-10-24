@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, send_from_directory
 import threading
 import time
+import json
 import logging
 import os
 from datetime import datetime, timedelta
@@ -8,6 +9,7 @@ from extract_log import extract_kuzco_results
 
 app = Flask(__name__, static_folder='.')
 
+# Logging ke file + console
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -20,15 +22,15 @@ logging.basicConfig(
 PORT = 5050
 HOST = '0.0.0.0'
 JSON_FILE = 'inference_results.json'
-RESET_INTERVAL = 4 * 60 * 60  # reset every 4h
+RESET_INTERVAL = 4 * 60 * 60  # reset 4h
 last_reset = time.time()
 
-# === MAINFUNCTION===
+# === MAINFUNCTION ===
 def save_results():
-    """Save results ekstract to JSON data"""
+    """Save results extract to JSON data"""
     results = extract_kuzco_results()
     with open(JSON_FILE, 'w') as f:
-        f.write(jsonify(results).get_data(as_text=True))
+        json.dump(results, f, indent=2)
     logging.info(f"Updated {JSON_FILE} → {len(results)} entries")
 
 def background_worker():
@@ -77,7 +79,7 @@ if __name__ == '__main__':
     worker = threading.Thread(target=background_worker, daemon=True)
     worker.start()
     
-    logging.info(f"Dashboard STARTED → http://<IP_SERVER>:{PORT}")
-    logging.info(f"Access anymore → replace <IP_SERVER> w/ your IP server")
+    logging.info(f"Dashboard Started → http://<IP_SERVER>:{PORT}")
+    logging.info(f"Access to → replace <IP_SERVER> with your IP server")
     
     app.run(host=HOST, port=PORT, threaded=True)
