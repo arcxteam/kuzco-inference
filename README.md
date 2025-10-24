@@ -7,12 +7,12 @@ sequenceDiagram
     participant Client
     participant KuzcoWorker
     participant VikeyAPI
-    participant AIModel
+    participant Model/AI
     
     Client->>KuzcoWorker: Request AI Service
     KuzcoWorker->>VikeyAPI: Call Inference API
-    VikeyAPI->>AIModel: Process Request
-    AIModel->>VikeyAPI: Return Inference Result
+    VikeyAPI->>Model/AI: Process Request
+    Model/AI->>VikeyAPI: Return Inference Result
     VikeyAPI->>KuzcoWorker: Send API Response
     KuzcoWorker->>Client: Deliver Final Result
 ```
@@ -25,12 +25,6 @@ sequenceDiagram
 ├──.ignore
 │
 ├── /home
-│   ├── monitoring/
-│   │   ├── extract_log.py
-│   │   ├── index.html
-│   │   ├── monitor_server.py
-│   │   └── inference_results.json
-│
 │   ├── .env
 │   ├── .gitignore
 │   ├── Dockerfile
@@ -47,7 +41,15 @@ sequenceDiagram
 │   ├── models.json
 │   └── vikey-inference-linux            # File binary for linux
 │
-├── README.md
+├── /dashboard                           # Web realtime monitoring (optional)
+│   ├── Dockerfile
+│   ├── docker-compose.yaml
+│   ├── extract_log.py
+│   ├── index.html                       # Homepages (access ip-server:port)
+│   ├── monitor_server.py
+│   └── inference_results.json
+│
+└── README.md
 ```
 
 ---
