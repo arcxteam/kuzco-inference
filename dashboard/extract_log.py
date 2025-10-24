@@ -1,50 +1,56 @@
 import re
 import json
-import subprocess
-import time
 import os
 
 def get_docker_logs():
-    """Get logs from mounted Docker log directory with JSON"""
+    """Get logs from mounted Docker log directory kuzco-inference"""
     try:
-        # Detech container-ID 'kuzco-inference'
-        result = subprocess.run(
-            ['docker', 'ps', '-q', '-f', 'name=kuzco-inference'],
-            capture_output=True,
-            text=True,
-            check=False
-        )
-        container_id = result.stdout.strip()
-        if not container_id:
-            print("DEBUG: No container found with name 'kuzco-inference'")
+        log_dir = "/host/docker/containers"
+        if not os.path.exists(log_dir):
+            print("DEBUG: Log directory /host/docker/containers not found")
             return "No logs found"
 
-        log_dir = "/host/docker/containers"
-        log_file = os.path.join(log_dir, f"{container_id}/{container_id}-json.log")
-        if os.path.exists(log_file):
-            with open(log_file, 'r') as f:
-                logs = f.read()
-                print(f"DEBUG: Logs read from file {log_file} (first 500 chars) = {logs[:500]}...")
-                print(f"DEBUG: Full log length = {len(logs)} characters")
-                # Parse JSON lines and extract 'log' field
-                log_entries = []
-                for line in logs.splitlines():
-                    try:
-                        entry = json.loads(line)
-                        if "log" in entry:
-                            log_entries.append(entry["log"])
-                    except json.JSONDecodeError:
-                        continue
-                return "\n".join(log_entries)
-        else:
-            print(f"DEBUG: Log file {log_file} not found")
+        container_dirs = [d for d in os.listdir(log_dir) if os.path.isdir(os.path.join(log_dir, d))]
+        if not container_dirs:
+            print("DEBUG: No container directories found")
             return "No logs found"
+
+        # Filter container 'kuzco-inference'
+        for container_id in container_dirs:
+            config_file = os.path.join(log_dir, container_id, "config.v2.json")
+            if os.path.exists(config_file):
+                with open(config_file, 'r') as f:
+                    config = json.load(f)
+                    # get container in-config
+                    name = config.get("Name", "").lstrip("/")
+                    if name == "kuzco-inference":
+                        log_file = os.path.join(log_dir, container_id, f"{container_id}-json.log")
+                        if os.path.exists(log_file):
+                            with open(log_file, 'r') as log_f:
+                                logs = log_f.read()
+                                print(f"DEBUG: Logs read from file {log_file} (first 500 chars) = {logs[:500]}...")
+                                print(f"DEBUG: Full log length = {len(logs)} characters")
+                                # Parse JSON lines and extract 'log' field
+                                log_entries = []
+                                for line in logs.splitlines():
+                                    try:
+                                        entry = json.loads(line)
+                                        if "log" in entry:
+                                            log_entries.append(entry["log"])
+                                    except json.JSONDecodeError:
+                                        continue
+                                return "\n".join(log_entries)
+                        else:
+                            print(f"DEBUG: Log file {log_file} not found for container {container_id}")
+                            return "No logs found"
+        print("DEBUG: No container named 'kuzco-inference' found")
+        return "No logs found"
     except Exception as e:
         print(f"DEBUG: Unexpected error in get_docker_logs: {e}")
         return f"Error: {e}"
 
 def extract_kuzco_results():
-    """Extract Kuzco inference results from logs"""
+    """Extract Kuzco inference results from sources logging"""
     logs = get_docker_logs()
     results = []
     lines = [line.strip() for line in logs.split('\n') if line.strip()]
@@ -62,7 +68,12 @@ def extract_kuzco_results():
             time_match = re.search(r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z)', line)
             timestamp = time_match.group(1) if time_match else "Unknown"
             inbox_match = re.search(r'inbox: (dispatcher\.[a-zA-Z0-9_\.]+)', line)
-            inbox_id = inbox_match.group(1) if inbox_match else "N/A"
+            inbox_id_full = inbox_match.group(1) if inbox_match else "N/A"
+            # cutoff inbox_id text
+            if inbox_id_full != "N/A" and len(inbox_id_full) > 20:  # cut if 20words
+                inbox_id = inbox_id_full[:20] + "….INBOX.."
+            else:
+                inbox_id = inbox_id_full
             if 'SUCCESS: Streaming inference completed' in cleaned_line:
                 status, message, action = 'Completed', 'SUCCESS: Streaming inference completed', 'Inference'
             elif 'Skipping logprobs' in cleaned_line:
