@@ -7,6 +7,7 @@
 # Ignore temporary files and backups
 *.tmp
 *.bak
+inference_results.json
 
 # Ignore Python artifacts
 __pycache__/
