@@ -1,6 +1,6 @@
 # A Comprehensive Guide - Running Kuzco Inference with CPU by API Proxy (Ollama or OpenAI)
 
-<img width="1600" height="900" alt="Run Testnet (1)" src="https://github.com/user-attachments/assets/06e73b28-3bf8-473b-98d0-9dac13cd8953" />
+<img width="1280" height="640" alt="Run Testnet (2)" src="https://github.com/user-attachments/assets/2eecf43f-a15d-45f6-acbb-bcc18d8b61aa" />
 
 ## (1) Inferences System Data Sequence Diagram
 
