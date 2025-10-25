@@ -52,9 +52,63 @@
 | openai/gpt-4.1                               | gpt-4.1                           | Rp 80000  | 32,768         | text-generation, vision, chat+1    | Active |
 | openai/gpt-oss-20b                           | gpt-oss-20b                       | Rp 6000   | 4,096          | text-generation, coding, tool      | Active |
 
-## Tampilan Dashboard Menu
+## Bang udah bang?
+- Harga ditampilkan dalam Rupiah (Rp) per 1 juta token (mix input/output) segono
+- Contact gue Telegram https://greyscope.xyz/x/telegram0xgrey
+- Contact gue Discord https://greyscope.xyz/x/discord
+
+## Dashboard Menu
 <img width="1141" height="777" alt="image" src="https://github.com/user-attachments/assets/93d2da45-fe95-48b7-ab37-fc94dc1898a2" />
 
 <img width="1306" height="1246" alt="image" src="https://github.com/user-attachments/assets/bffdb2e0-1d9a-438f-9b45-11ac08430581" />
 
 <img width="1302" height="674" alt="image" src="https://github.com/user-attachments/assets/402730e1-8154-4452-ab22-0b56298b1e0e" />
+
+
+## Flowchart Distribution
+
+```mermaid
+graph TD
+    A[USER] --> B[RUNNER]
+    B --> C[DOCKER]
+    C --> D1[Build vikey-inference]
+    C --> D2[Build home-main]
+    
+    D1 --> E1[Download binary dari GitHub]
+    D1 --> F1[Konfigurasi .env]
+    D1 --> G1[Build Image]
+    
+    D2 --> E2[Download binary ke /app/vikey-inference]
+    D2 --> F2[Install Inference Runtime]
+    D2 --> G2[Build Image]
+    
+    G1 --> H1[Run Container]
+    G2 --> H2[Run Container]
+    
+    H1 --> I1[Start Vikey API<br>Port 11434]
+    H2 --> I2[Execute execute.sh]
+    
+    I2 --> J{Verify Binary}
+    J -->|Missing| K[Download binary]
+    J -->|Exists| L[Setup GPU & Model]
+    
+    L --> M[Start Inference Service]
+    M --> N[Kuzco.log]
+    
+    I2 --> O[Start Kuzco Node<br>--code $CODE]
+    
+    I1 --> P[[Vikey Inference API]]
+    O --> Q[[Kuzco Worker]]
+    
+    P --> R[[Handle AI Requests]]
+    Q --> S[[Manage Workers]]
+    
+    R --> T[AI Responses]
+    S --> U[Coordinate Jobs]
+    
+    style A fill:#4CAF50,stroke:#388E3C
+    style P fill:#2196F3,stroke:#0D47A1
+    style Q fill:#FF9800,stroke:#E65100
+    style R fill:#9C27B0,stroke:#6A1B9A
+    style T fill:#F44336,stroke:#D32F2F
+```
