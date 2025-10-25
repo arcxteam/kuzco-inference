@@ -1,5 +1,7 @@
 # A Comprehensive Guide - Running Kuzco Inference with CPU by API Proxy (Ollama or OpenAI)
 
+<img width="1600" height="900" alt="Run Testnet" src="https://github.com/user-attachments/assets/d647bd9f-7fea-47c3-9e46-67940e42e1df" />
+
 ## (1) Inferences System Data Sequence Diagram
 
 ```mermaid
@@ -17,7 +19,7 @@ sequenceDiagram
     KuzcoWorker->>Client: Deliver Final Result
 ```
 
-## (2) Structure Directory of File
+## (2) Structure Directory
 
 ```diff
 /kuzco-inference
@@ -41,97 +43,82 @@ sequenceDiagram
 │   ├── models.json
 │   └── vikey-inference-linux            # File binary for linux
 │
-├── /dashboard                           # Web realtime monitoring (optional)
+-├── /dashboard                          # Realtime monitoring run (optional)
 │   ├── Dockerfile
 │   ├── docker-compose.yaml
 │   ├── extract_log.py
-│   ├── index.html                       # Homepages (access ip-server:port)
+│   ├── index.html                       # Homepage (check preview)
 │   ├── monitor_server.py
 │   └── inference_results.json
 │
 └── README.md
 ```
 
+## (3) Preview/Demo Kuzco Inference Homepage
+
+> [!NOTE]
+> Check preview homepage if need run (realtime) by own-localthost [Kuzco Inference Dashboard](https://arcxteam.github.io/kuzco-inference/dashboard/)
+
 ---
 
-## Initial Requirements
+## A. SETUP FOR ACCOUNT
 
-| Requirement     | Minimum                |
+### 1. Initial Requirements
+
+| Requirement     | Details                |
 | :----------     | :--------------------  |
 | **Linux**       | Ubuntu 20 - 22 - 24 LTS          |
-| **Mac**         | Chip M1, M2, M3, M4              |
 | **CPU**         | vCores 8 with 8GB RAM - more     |      
-| **STORAGE**     | Up 50GB - 99GB - more spaces     |
+| **STORAGE**     | Up 50GB - more spaces            |
+| **API PROXY**   | Support LLM Ollama & OpenAI      |
+| **PORT**        | Open 11434 (Official API Proxy)  |
+|                 | Open 14444 (Official API Kuzco)  |
+|                 | Open 5050 (Custom for Dashboard) |
 
-## Dashboard Registration
+### 2. Registration Kuzco Inference
 
-### Register and Obtain an API Key
-- Visit the dashboard & sign up using an email:
-- Navigate to the `API-KEYS` section.
-- Create a new key `wsk-xxx` **SAVE SAVE SAVE**
-- Copy the key you can create multiple keys, **if forget save generate again**
-- 
-## Clone Repository
+**Obtain correct CLI WORKER**
+- Sign up here https://devnet.inference.net/register
+- Navigate to [create worker](https://devnet.inference.net/dashboard/workers/create)
+- Create up to you `Worker Name` → `CLI` → `Create Worker`
+- Click your `Worker Name` → click `Instance` and `Launch worker` → in section Step 2: Run an instance of this worker `COPY YOUR CODE`
+
+### 3. Registration for API Proxy
+**Note, use Vikey AI**
+- Need API-KEY w/ compatible format Ollama or OpenAI (LLM)
+- I use `VikeyAI` for default Kuzco model `llama-3.2-3b-instruct` & more models <mark>Rp.3000-5000/1M Tokens ~ $0.2-$0.3/1M Tokens</mark>
+- Readme here for detail use [bahasa indonesia](https://github.com/arcxteam/kuzco-inference/blob/main/VIKEY-ID.md)
+- Readme here for detail use [languange english](https://github.com/arcxteam/kuzco-inference/blob/main/VIKEY-EN.md)
+
+## B. SETUP FOR CONFIGURATION
+
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/arcxteam/kuzco-inference.git
 ```
+> After completed all step above, final config for runnig here
 
-## Config Account
+- Setup directory `kuzco-inference/home/.env` **(Main Run Kuzco)**
+- Setup directory `kuzco-inference/vikey-inference/.env` **(API Proxy Model Run)**
+- Setup directory `kuzco-inference/dashboard` **(optional run if need realtime monitoring)**
 
-Copy .env from example
+### 2. Config Account (.env)
+
+- First need running `API Proxy LLModel Running`
+- Replace API KEY `VIKEY_API_KEY=vk-xxxxxxxxx`
+
 ```bash
-cp .env.example .env
-```
-Edit `.env`:
-```
-nano .env
+cd kuzco-inference/vikey-inference && nano .env
 ```
 
-## Flowchart Distribution
-
-```mermaid
-graph TD
-    A[USER] --> B[RUNNER]
-    B --> C[DOCKER]
-    C --> D1[Build vikey-inference]
-    C --> D2[Build home-main]
-    
-    D1 --> E1[Download binary dari GitHub]
-    D1 --> F1[Konfigurasi .env]
-    D1 --> G1[Build Image]
-    
-    D2 --> E2[Download binary ke /app/vikey-inference]
-    D2 --> F2[Install Inference Runtime]
-    D2 --> G2[Build Image]
-    
-    G1 --> H1[Run Container]
-    G2 --> H2[Run Container]
-    
-    H1 --> I1[Start Vikey API<br>Port 11434]
-    H2 --> I2[Execute execute.sh]
-    
-    I2 --> J{Verify Binary}
-    J -->|Missing| K[Download binary]
-    J -->|Exists| L[Setup GPU & Model]
-    
-    L --> M[Start Inference Service]
-    M --> N[Kuzco.log]
-    
-    I2 --> O[Start Kuzco Node<br>--code $CODE]
-    
-    I1 --> P[[Vikey Inference API]]
-    O --> Q[[Kuzco Worker]]
-    
-    P --> R[[Handle AI Requests]]
-    Q --> S[[Manage Workers]]
-    
-    R --> T[AI Responses]
-    S --> U[Coordinate Jobs]
-    
-    style A fill:#4CAF50,stroke:#388E3C
-    style P fill:#2196F3,stroke:#0D47A1
-    style Q fill:#FF9800,stroke:#E65100
-    style R fill:#9C27B0,stroke:#6A1B9A
-    style T fill:#F44336,stroke:#D32F2F
+```bash
+docker compose up --build -d
 ```
+
+- Seconds need running `Main Run Kuzco with official config Binary`
+- Replace this `WORKER_CODE=xxxxxxx` and `WORKER_NAME=xxxxxx` and `VIKEY_API_KEY=vk-xxxxxx`
+- Where do? worker code, worker name read above 
+
+
+
