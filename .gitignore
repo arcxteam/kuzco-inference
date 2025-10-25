@@ -1,25 +1,18 @@
 # Ignore environment files
 .env
-
 # Ignore log files
 *.log
-
 # Ignore temporary files and backups
 *.tmp
 *.bak
-inference_results.json
-
+# Ignore dynamically generated JSON files
+dashboard/inference_results.json
 # Ignore Python artifacts
 __pycache__/
 *.pyc
-
-# Ignore Docker artifacts (handled centrally by .dockerignore)
-Dockerfile
-docker-compose.yaml
-
+# Ignore system-specific files
 .DS_Store
 Thumbs.db
-
 # Ignore IDE/project-specific files
 .idea/
 .vscode/
