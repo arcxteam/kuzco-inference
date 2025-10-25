@@ -1,6 +1,6 @@
 # A Comprehensive Guide - Running Kuzco Inference with CPU by API Proxy (Ollama or OpenAI)
 
-<img width="1600" height="900" alt="Run Testnet" src="https://github.com/user-attachments/assets/d647bd9f-7fea-47c3-9e46-67940e42e1df" />
+<img width="1600" height="900" alt="Run Testnet (1)" src="https://github.com/user-attachments/assets/06e73b28-3bf8-473b-98d0-9dac13cd8953" />
 
 ## (1) Inferences System Data Sequence Diagram
 
@@ -28,7 +28,6 @@ sequenceDiagram
 │
 ├── /home
 │   ├── .env
-│   ├── .gitignore
 │   ├── Dockerfile
 │   ├── docker-compose.yaml
 │   ├── ex.nginx-conf
@@ -37,11 +36,10 @@ sequenceDiagram
 │
 ├── /vikey-inference
 │   ├── .env
-│   ├── .gitignore
 │   ├── Dockerfile
 │   ├── docker-compose.yaml
 │   ├── models.json
-│   └── vikey-inference-linux            # File binary for linux
+│   └── vikey-inference-linux            # File config binary linux (for windows request)
 │
 -├── /dashboard                          # Realtime monitoring run (optional)
 │   ├── Dockerfile
@@ -54,7 +52,7 @@ sequenceDiagram
 └── README.md
 ```
 
-## (3) Preview/Demo Kuzco Inference Homepage
+## (3) Preview Kuzco Inference Dashboard
 
 > [!NOTE]
 > Check preview homepage if need run (realtime) by own-localthost [Kuzco Inference Dashboard](https://arcxteam.github.io/kuzco-inference/dashboard/)
@@ -90,7 +88,7 @@ sequenceDiagram
 ### 3. Registration for API Proxy
 **Note, use Vikey AI**
 - Need API-KEY w/ compatible format Ollama or OpenAI (LLM)
-- I use `VikeyAI` for default Kuzco model `llama-3.2-3b-instruct` & more models <mark>Rp.3000-5000/1M Tokens ~ $0.2-$0.3/1M Tokens</mark>
+- I use `VikeyAI` for default Kuzco model `llama-3.2-3b-instruct` & more models <mark>Rp.3000-5000/1M Tokens ~ $0.18-$0.3/1M Tokens</mark>
 - Readme here for detail use [bahasa indonesia](https://github.com/arcxteam/kuzco-inference/blob/main/VIKEY-ID.md)
 - Readme here for detail use [languange english](https://github.com/arcxteam/kuzco-inference/blob/main/VIKEY-EN.md)
 
@@ -105,7 +103,7 @@ tar clang nethogs ncdu unzip build-essential pkg-config libssl-dev libleveldb-de
 speedtest-cli ca-certificates libffi-dev libsqlite3-dev -y
 ```
 
-### 2. Install Node.js, Npm, Yarn, & Pm2 (optional)
+### 2. Install v22.18 Node.js, Npm, Yarn, & Pm2 (optional)
 ```
 source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/nodejs.sh)
 ```
@@ -115,7 +113,7 @@ source <(wget -qO- https://raw.githubusercontent.com/arcxteam/w-ai-wombo/main/no
 curl -sSL https://raw.githubusercontent.com/arcxteam/succinct-prover/refs/heads/main/docker.sh | bash
 ```
 
-### 4. Clone Repository & PORT Firewall
+### 4. Clone Repository & Port Firewall
 ```bash
 git clone https://github.com/arcxteam/kuzco-inference.git
 ```
@@ -124,18 +122,18 @@ git clone https://github.com/arcxteam/kuzco-inference.git
 sudo ufw allow 11434 && sudo ufw allow 14444 && sudo ufw allow 5050 && sudo ufw reload && sudo ufw status verbose
 ```
 
-> After completed all step above, final config for step running 
+> After completed all step, final config for next step run
 
-- Setup directory `kuzco-inference/home/` **(Main Run Kuzco)**
+- Setup directory `kuzco-inference/home/` **(Main Running Kuzco)**
 - Setup directory `kuzco-inference/vikey-inference/` **(API Proxy Model Run)**
-- Setup directory `kuzco-inference/dashboard/` **(optional run if need realtime monitoring)**
+- Setup directory `kuzco-inference/dashboard/` **(Optional run if need realtime monitor)**
 
 ### 5. Config Account (.env)
 
 > NOTE: RUN 1st
-- First need running `API Proxy LLModel Running`
+- First running `API Proxy LLModels`
 - Replace this API KEY `VIKEY_API_KEY=vk-xxxxxxxxx`
-- If success build check logs `docker compose logs` this optional
+- If success build check logs `docker compose logs` is optional
 
 ```bash
 cd kuzco-inference/vikey-inference && nano .env
@@ -149,7 +147,8 @@ docker compose up --build -d
 - Seconds need running `Main Run Kuzco with official config Binary`
 - After success run above, in terminal back to `cd` and next step
 - Replace this `WORKER_CODE=xxxxxxx` and `WORKER_NAME=xxxxxx` and `VIKEY_API_KEY=vk-xxxxxx`
-- Where do? worker code, worker name read above **A.SETUP FOR ACCOUNT**
+- Where do? worker code, worker name read above <mark>**A.SETUP FOR ACCOUNT**</mark>
+- If success build check logs `docker compose logs -f`
 
 ```bash
 cd kuzco-inference/home && nano .env
@@ -161,11 +160,32 @@ docker compose up --build -d
 
 ### 6. Running Homepages/Dashboard
 
-> NOTE: AFTER SUCCESS RUN ALL AND STABLE GET INFERENCE INFO LOGGING, YOU CAN RUNNING YOUR OWN DASHBOARD MONITORING THIS ACTUALLY YOUR OWN RUNNING LOGS
+> NOTE: AFTER SUCCESS ALL DIRECTORY RUN AND STABLE GET INFERENCE INFO LOGGING, YOU CAN RUN OWN DASHBOARD MONITORING THIS ACTUAL BY YOUR RUNNING LOG
 - Get ip address `curl ifconfig.me && echo`
-- For access `http://ip-address:5050`
+- For access web `http://ip-address:5050`
 
 ```bash
 cd kuzco-inference/dashboard && docker compose up --build -d
 ```
 
+## C. USEFULL COMMANDER
+
+```diff
+# Check info logging
++ docker logs -f kuzco-inference --tail=200
++ docker compose logs -f --tail=200
+
+# Stop & up, Go to each directory
++ cd kuzco-inference/home
++ cd kuzco-inference/dashboard
++ cd kuzco-inference/vikey-inference
++ docker compose down -v
++ docker compose up --build -d
+
+# Delete total image build and clean
++ docker rmi home-kuzco-main:latest && docker rmi vikey-inference-vikey-inference:latest
+```
+
+## D. Having Problems Issues
+
+- Created here https://github.com/arcxteam/kuzco-inference/issues
