@@ -11,17 +11,15 @@ __pycache__
 README.md
 ex.nginx-conf
 models.json
-inference_results.json
-# Ignore IDE/project-specific files
 .idea/
 .vscode/
 # Ignore parent directory files when building from subdirs
 ../*.md
 ../*.sh
-
 !start.sh
 !execute.sh
 !models.json
 !extract_log.py
 !monitor_server.py
 !index.html
+!dashboard/inference_results.json
