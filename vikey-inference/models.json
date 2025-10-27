@@ -7,9 +7,9 @@
   "llama3.2-8b-instruct",
   "llama3.2:3b-instruct-fp16",
   "llama3.2:1b-instruct-fp16",
+  "llama3.1:8b-instruct-fp16",
+  "llama3.1:8b-instruct-q8_0",
   "llama3.1:8b-instruct-q4_K_M",
   "llama3.3:70b-instruct-fp16",
-  "llama3.3:70b-instruct-q8_0",
-  "hellord/mxbai-embed-large-v1:f16",
-  "all-minilm"
+  "llama3.3:70b-instruct-q8_0"
 ]
