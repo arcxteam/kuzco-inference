@@ -6,6 +6,7 @@ WORKDIR /app
 
 ARG VIKEY_API_KEY=your_default_api_key_here
 ARG NODE_PORT=11434
+ARG VIKEY_API_URL=https://openrouter.ai/api/v1
 # ARG EMBEDDING_API_URL=https://kuzco-inference.greyscope.xyz/v1
 # ARG EMBEDDING_API_KEY=your_embedding_key_here
 
