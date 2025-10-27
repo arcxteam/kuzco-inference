@@ -6,7 +6,7 @@ WORKDIR /app
 
 ARG VIKEY_API_KEY=your_default_api_key_here
 ARG NODE_PORT=11434
-ARG VIKEY_API_URL=your_default_api_url_here
+ARG VIKEY_API_URL=your_default_url_key_here
 
 # Download binary
 RUN wget https://github.com/arcxteam/kuzco-inference/releases/download/v1.0.0/vikey-inference-linux -O vikey-inference-linux \
@@ -15,10 +15,12 @@ RUN wget https://github.com/arcxteam/kuzco-inference/releases/download/v1.0.0/vi
 COPY models.json .
 COPY .env .env
 
+# UPDATE VARIABEL
 RUN if [ "$VIKEY_API_KEY" != "your_default_api_key_here" ]; then \
     sed -i "s/VIKEY_API_KEY=.*/VIKEY_API_KEY=$VIKEY_API_KEY/" .env; \
 fi
 RUN sed -i "s/NODE_PORT=.*/NODE_PORT=$NODE_PORT/" .env
+RUN sed -i "s|VIKEY_API_URL=.*|VIKEY_API_URL=$VIKEY_API_URL|" .env
 
 EXPOSE $NODE_PORT
 
