@@ -12,6 +12,7 @@ services:
       CODE: "${WORKER_CODE}"
       WORKER_NAME: "${WORKER_NAME}"
       VIKEY_API_KEY: "${VIKEY_API_KEY}"
+      VIKEY_API_URL: "${VIKEY_API_URL}"
     volumes:
       - /var/lib/docker/containers:/host/docker/containers:ro  # Mount log Docker read-only
 
