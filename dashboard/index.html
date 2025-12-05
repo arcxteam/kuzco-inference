@@ -21,7 +21,7 @@
             --border-color: #2a3142;
             --text-primary: #e4e4e7;
             --text-secondary: #9ca3af;
-            --accent-orange: #f0552f;
+            --accent-orange: #960ff0;
             --accent-blue: #1c71f0;
             --accent-green: #4CAF50;
             --table-hover: rgba(255, 255, 255, 0.05);
@@ -105,20 +105,36 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 0; /* PERBAIKAN: Padding dipindahkan ke dalam */
             max-height: 500px;
-            overflow-y: auto;
+            overflow: hidden; /* PERBAIKAN: Container utama tidak overflow */
+            display: flex;
+            flex-direction: column;
         }
 
+        /* PERBAIKAN: Style baru untuk header yang menempel */
         .table-card h2 {
             font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 1rem;
             color: var(--text-primary);
-            text-align: left;
+            text-align: center;
+            padding: 1rem 1.5rem;
+            margin: 0;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 11;
         }
+        
+        /* PERBAIKAN: Container baru untuk table agar bisa scroll */
+        .table-wrapper {
+            overflow-y: auto;
+            flex-grow: 1; /* Memastikan wrapper mengisi sisa ruang */
+        }
+
 
         /* --- Table Styles (Desktop View) --- */
         .desktop-table {
@@ -133,27 +149,57 @@
             border-bottom: 1px solid var(--border-color);
             font-family: 'Geist Mono', monospace;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
+        /* PERBAIKAN 1: Mengubah warna background header */
         .desktop-table thead th {
-            background-color: var(--bg-secondary);
+            background-color: var(--accent-orange);
+            color: white;
             font-weight: 600;
-            color: var(--text-secondary);
             position: sticky;
-            top: 0;
+            top: 0; /* PERBAIKAN 2: Top disesuaikan agar menempel di bawah h2 */
             z-index: 10;
         }
+        
+        /* PERBAIKAN 3: Menghitung ketinggian h2 secara dinamis untuk sticky thead */
+        /* Ini adalah trik CSS, mungkin perlu penyesuaian jika font h2 berubah */
+        .table-card h2 {
+             height: 60px; /* Perkiraan tinggi, sesuaikan jika perlu */
+             line-height: 40px; /* Sesuaikan dengan padding dan font-size */
+        }
+        .desktop-table thead th {
+             top: 60px; /* Samakan dengan tinggi h2 */
+        }
+
 
         .desktop-table tbody tr:hover {
             background-color: var(--table-hover);
         }
+        
+        /* PERBAIKAN 4: Menambahkan background blur pada baris */
+        .desktop-table tbody tr {
+            background: rgba(255, 255, 255, 0.02);
+            transition: background-color 0.2s ease;
+        }
+        body.light .desktop-table tbody tr {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .desktop-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        body.light .desktop-table tbody tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
         
         .status-completed { color: var(--accent-green); }
         .status-processing, .status-heartbeat, .status-other, .status-no-activity { color: var(--accent-orange); }
 
         /* --- Mobile Card Styles --- */
         .mobile-card {
-            display: none; /* Hidden by default */
+            display: none;
             background: var(--bg-secondary);
             border-radius: 8px;
             padding: 1rem;
@@ -192,63 +238,63 @@
         /* --- Responsive Breakpoint --- */
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
-            .table-card { padding: 1rem; }
-            .desktop-table { display: none; } /* Hide table on mobile */
-            .mobile-card { display: block; } /* Show cards on mobile */
+            .table-card { padding: 0; }
+            .desktop-table { display: none; }
+            .mobile-card { display: block; }
         }
     </style>
 </head>
-<body>
+<body class="light">
     <div class="container">
-        <h1><i class="fa-solid fa-cube fa-spin-pulse"></i> Kuzco Inference Dashboard </h1>
-        <p> Auto updates every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Realtime data sources </p>
-        <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon fa-beat-fade"></i> Select Mode </button>
+        <h1> Kuzco Dashboard </h1>
+        <p> Auto update every <i class="fa-solid fa-clock fa-spin"></i> 10 secs. Realtime data sources </p>
+        <button class="toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-sun fa-beat-fade"></i> Light Mode </button>
         
         <div class="grid-container">
             <!-- Grid 1: Kuzco Log -->
             <div class="table-card">
-                <h2><i class="fa-solid fa-cube fa-spin"></i> Kuzco Inference <i class="fa-solid fa-cube fa-spin fa-spin-reverse"></i></h2>
-                
-                <!-- Desktop Table -->
-                <table class="desktop-table">
-                    <thead>
-                        <tr>
-                            <th>Inbox ID</th>
-                            <th>Status</th>
-                            <th>Timestamp</th>
-                            <th>Message</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="kuzco-results"></tbody>
-                </table>
-                
+                <h2><i class="fa-solid fa-border-none fa-spin"></i> Generations Inference <i class="fa-solid fa-border-none fa-spin fa-spin-reverse"></i></h2>
+                <div class="table-wrapper">
+                    <!-- Desktop Table -->
+                    <table class="desktop-table">
+                        <thead>
+                            <tr>
+                                <th>Inbox ID</th>
+                                <th>Status</th>
+                                <th>Timestamp</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kuzco-results"></tbody>
+                    </table>
+                </div>
                 <!-- Mobile Cards Container -->
                 <div id="kuzco-results-mobile"></div>
             </div>
             
             <!-- Grid 2: Vikey Dashboard -->
             <div class="table-card">
-                <h2><i class="fa-solid fa-layer-group fa-spin"></i> Vikey AI <i class="fa-solid fa-layer-group fa-spin fa-spin-reverse"></i></h2>
-                
-                <!-- Desktop Table -->
-                <table class="desktop-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Model</th>
-                            <th>I/Token</th>
-                            <th>O/Token</th>
-                            <th>Cost</th>
-                            <th>Endpoint</th>
-                            <th>Status</th>
-                            <th>Inbox ID</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vikey-results"></tbody>
-                </table>
-
+                <h2><i class="fa-brands fa-connectdevelop fa-spin-pulse"></i> LLM Inference <i class="fa-brands fa-connectdevelop fa-spin-pulse"></i></h2>
+                <div class="table-wrapper">
+                    <!-- Desktop Table -->
+                    <table class="desktop-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Model</th>
+                                <th>I/Token</th>
+                                <th>O/Token</th>
+                                <th>Cost</th>
+                                <th>Endpoint</th>
+                                <th>Status</th>
+                                <th>Inbox ID</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vikey-results"></tbody>
+                    </table>
+                </div>
                 <!-- Mobile Cards Container -->
                 <div id="vikey-results-mobile"></div>
             </div>
@@ -262,6 +308,15 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        function setInitialThemeButton() {
+            const btn = document.querySelector('.toggle-btn');
+            if (document.body.classList.contains('light')) {
+                btn.innerHTML = '<i class="fa-solid fa-sun fa-beat-fade"></i> Light Mode';
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-moon fa-beat-fade"></i> Dark Mode';
+            }
+        }
+
         function toggleTheme() {
             document.body.classList.toggle('light');
             const btn = document.querySelector('.toggle-btn');
@@ -271,8 +326,6 @@
         }
 
         function loadResults() {
-            // Using a placeholder for the JSON fetch for demonstration
-            // In your real code, keep: fetch('inference_results.json?' + Date.now())
             fetch('inference_results.json?' + Date.now())
                 .then(response => response.json())
                 .then(data => {
@@ -281,7 +334,6 @@
                     const kuzcoMobile = document.getElementById('kuzco-results-mobile');
                     const vikeyMobile = document.getElementById('vikey-results-mobile');
                     
-                    // Clear previous results
                     kuzcoTbody.innerHTML = '';
                     vikeyTbody.innerHTML = '';
                     kuzcoMobile.innerHTML = '';
@@ -293,11 +345,11 @@
                         // --- Kuzco Data (Desktop Table Row) ---
                         const kuzcoRow = document.createElement('tr');
                         kuzcoRow.innerHTML = `
-                            <td>${item.inbox}</td>
+                            <td title="${item.inbox}">${item.inbox}</td>
                             <td class="status-${statusClass}">${item.status}</td>
-                            <td>${item.timestamp}</td>
-                            <td>${item.message}</td>
-                            <td>${item.action}</td>
+                            <td title="${item.timestamp}">${item.timestamp}</td>
+                            <td title="${item.message}">${item.message}</td>
+                            <td title="${item.action}">${item.action}</td>
                         `;
                         kuzcoTbody.appendChild(kuzcoRow);
 
@@ -313,20 +365,19 @@
                         `;
                         kuzcoMobile.appendChild(kuzcoCard);
 
-                        // --- Vikey Data (Only if 'Completed') ---
                         if (item.status === 'Completed') {
                             // Vikey (Desktop Table Row)
                             const vikeyRow = document.createElement('tr');
                             vikeyRow.innerHTML = `
-                                <td>${item.date}</td>
-                                <td>${item.model}</td>
+                                <td title="${item.date}">${item.date}</td>
+                                <td title="${item.model}">${item.model}</td>
                                 <td>${item.input_tokens}</td>
                                 <td>${item.output_tokens}</td>
                                 <td>${item.cost}</td>
-                                <td>${item.endpoint}</td>
+                                <td title="${item.endpoint}">${item.endpoint}</td>
                                 <td class="status-${statusClass}">${item.status}</td>
-                                <td>${item.inbox}</td>
-                                <td>${item.timestamp}</td>
+                                <td title="${item.inbox}">${item.inbox}</td>
+                                <td title="${item.timestamp}">${item.timestamp}</td>
                             `;
                             vikeyTbody.appendChild(vikeyRow);
 
@@ -355,8 +406,9 @@
                 });
         }
 
+        setInitialThemeButton();
         loadResults();
-        setInterval(loadResults, 10000); // Update every 10 seconds
+        setInterval(loadResults, 10000);
     </script>
 </body>
 </html>
