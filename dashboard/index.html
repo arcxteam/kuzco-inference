@@ -4,18 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuzco Inferences Dashboard</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- Google Fonts: Inter & Geist Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #212937;
+            --bg-card: rgba(26, 31, 46, 0.8);
+            --border-color: #2a3142;
+            --text-primary: #e4e4e7;
+            --text-secondary: #9ca3af;
+            --accent-orange: #f0552f;
+            --accent-blue: #1c71f0;
+            --accent-green: #4CAF50;
+            --table-hover: rgba(255, 255, 255, 0.05);
+        }
+
+        body.light {
+            --bg-primary: #f4f4f4;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --border-color: #ddd;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --table-hover: rgba(0, 0, 0, 0.05);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Geist Mono', monospace;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,115 +54,147 @@
             padding: 1rem;
             transition: background-color 0.3s, color 0.3s;
         }
-        body.light {
-            background-color: #f4f4f4;
-            color: #333;
-        }
+
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
             text-align: center;
         }
+
         h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            color: #f0552f;
+            color: var(--accent-orange);
         }
+
         p {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #b0b0b0;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
         }
+
         .toggle-btn {
-            background-color: #1c71f0;
+            background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            transition: background-color 0.3s;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
         }
+
         .toggle-btn:hover {
-            background-color: #f0552f;
+            background-color: var(--accent-orange);
+            transform: translateY(-2px);
         }
+
         .grid-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
         }
-        .grid-container > div {
-            max-height: 400px; /* Batas tinggi untuk scroll */
-            overflow-y: auto; /* Aktifkan scroll vertikal */
+
+        .table-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
         }
-        table {
+
+        .table-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* --- Table Styles (Desktop View) --- */
+        .desktop-table {
             width: 100%;
             border-collapse: collapse;
-            background: #2a2a2a;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
-        body.light table {
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        .desktop-table th, .desktop-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Geist Mono', monospace;
+            white-space: nowrap;
         }
-        th, td {
-            border: 1px solid #444;
-            padding: 0.6rem;
-            text-align: center;
-            white-space: nowrap; /* Cegah teks membungkus */
-        }
-        body.light th, body.light td {
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
+
+        .desktop-table thead th {
+            background-color: var(--bg-secondary);
             font-weight: 600;
+            color: var(--text-secondary);
             position: sticky;
             top: 0;
-            z-index: 1;
+            z-index: 10;
         }
-        tr:nth-child(even) {
-            background-color: #333;
+
+        .desktop-table tbody tr:hover {
+            background-color: var(--table-hover);
         }
-        body.light tr:nth-child(even) {
-            background-color: #f2f2f2;
+        
+        .status-completed { color: var(--accent-green); }
+        .status-processing, .status-heartbeat, .status-other, .status-no-activity { color: var(--accent-orange); }
+
+        /* --- Mobile Card Styles --- */
+        .mobile-card {
+            display: none; /* Hidden by default */
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
         }
-        tr:hover {
-            background-color: #555;
-            transition: background-color 0.2s;
+
+        .mobile-card-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.85rem;
         }
-        body.light tr:hover {
-            background-color: #ddd;
+
+        .mobile-card-item:last-child {
+            border-bottom: none;
         }
-        .status-completed {
-            color: #4CAF50;
+
+        .mobile-card-item strong {
+            color: var(--text-secondary);
+            font-weight: 600;
         }
-        .status-processing, .status-heartbeat, .status-other, .status-no-activity {
-            color: #ff4444;
+
+        .mobile-card-item span {
+            font-family: 'Geist Mono', monospace;
+            text-align: right;
         }
+        
         footer {
-            margin-top: 1.5rem;
-            font-size: 0.75rem;
-            color: #b0b0b0;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
-        body.light footer {
-            color: #666;
-        }
+
+        /* --- Responsive Breakpoint --- */
         @media (max-width: 768px) {
-            h1 { font-size: 1.5rem; }
-            p, .toggle-btn { font-size: 0.8rem; }
-            table { font-size: 0.7rem; }
-            th, td { padding: 0.4rem; }
-            .grid-container { gap: 1rem; }
-            .grid-container > div { max-height: 300px; }
-        }
-        @media (max-width: 480px) {
-            table { font-size: 0.65rem; }
-            th, td { padding: 0.3rem; }
+            h1 { font-size: 2rem; }
+            .table-card { padding: 1rem; }
+            .desktop-table { display: none; } /* Hide table on mobile */
+            .mobile-card { display: block; } /* Show cards on mobile */
         }
     </style>
 </head>
@@ -143,9 +206,11 @@
         
         <div class="grid-container">
             <!-- Grid 1: Kuzco Log -->
-            <div>
+            <div class="table-card">
                 <h2><i class="fa-solid fa-cube fa-spin"></i> Kuzco Inference <i class="fa-solid fa-cube fa-spin fa-spin-reverse"></i></h2>
-                <table>
+                
+                <!-- Desktop Table -->
+                <table class="desktop-table">
                     <thead>
                         <tr>
                             <th>Inbox ID</th>
@@ -157,12 +222,17 @@
                     </thead>
                     <tbody id="kuzco-results"></tbody>
                 </table>
+                
+                <!-- Mobile Cards Container -->
+                <div id="kuzco-results-mobile"></div>
             </div>
             
             <!-- Grid 2: Vikey Dashboard -->
-            <div>
+            <div class="table-card">
                 <h2><i class="fa-solid fa-layer-group fa-spin"></i> Vikey AI <i class="fa-solid fa-layer-group fa-spin fa-spin-reverse"></i></h2>
-                <table>
+                
+                <!-- Desktop Table -->
+                <table class="desktop-table">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -178,6 +248,9 @@
                     </thead>
                     <tbody id="vikey-results"></tbody>
                 </table>
+
+                <!-- Mobile Cards Container -->
+                <div id="vikey-results-mobile"></div>
             </div>
         </div>
         
@@ -189,7 +262,6 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Theme toggle
         function toggleTheme() {
             document.body.classList.toggle('light');
             const btn = document.querySelector('.toggle-btn');
@@ -198,20 +270,27 @@
                 : '<i class="fa-solid fa-moon fa-beat-fade"></i> Dark Mode';
         }
 
-        // Load data
         function loadResults() {
+            // Using a placeholder for the JSON fetch for demonstration
+            // In your real code, keep: fetch('inference_results.json?' + Date.now())
             fetch('inference_results.json?' + Date.now())
                 .then(response => response.json())
                 .then(data => {
                     const kuzcoTbody = document.getElementById('kuzco-results');
                     const vikeyTbody = document.getElementById('vikey-results');
+                    const kuzcoMobile = document.getElementById('kuzco-results-mobile');
+                    const vikeyMobile = document.getElementById('vikey-results-mobile');
+                    
+                    // Clear previous results
                     kuzcoTbody.innerHTML = '';
                     vikeyTbody.innerHTML = '';
+                    kuzcoMobile.innerHTML = '';
+                    vikeyMobile.innerHTML = '';
 
                     data.forEach(item => {
                         const statusClass = item.status.toLowerCase().replace(/ /g, '-');
 
-                        // Grid 1: Kuzco
+                        // --- Kuzco Data (Desktop Table Row) ---
                         const kuzcoRow = document.createElement('tr');
                         kuzcoRow.innerHTML = `
                             <td>${item.inbox}</td>
@@ -222,8 +301,21 @@
                         `;
                         kuzcoTbody.appendChild(kuzcoRow);
 
-                        // Grid 2: Vikey
+                        // --- Kuzco Data (Mobile Card) ---
+                        const kuzcoCard = document.createElement('div');
+                        kuzcoCard.className = 'mobile-card';
+                        kuzcoCard.innerHTML = `
+                            <div class="mobile-card-item"><strong>Inbox ID:</strong><span>${item.inbox}</span></div>
+                            <div class="mobile-card-item"><strong>Status:</strong><span class="status-${statusClass}">${item.status}</span></div>
+                            <div class="mobile-card-item"><strong>Timestamp:</strong><span>${item.timestamp}</span></div>
+                            <div class="mobile-card-item"><strong>Message:</strong><span>${item.message}</span></div>
+                            <div class="mobile-card-item"><strong>Action:</strong><span>${item.action}</span></div>
+                        `;
+                        kuzcoMobile.appendChild(kuzcoCard);
+
+                        // --- Vikey Data (Only if 'Completed') ---
                         if (item.status === 'Completed') {
+                            // Vikey (Desktop Table Row)
                             const vikeyRow = document.createElement('tr');
                             vikeyRow.innerHTML = `
                                 <td>${item.date}</td>
@@ -237,18 +329,34 @@
                                 <td>${item.timestamp}</td>
                             `;
                             vikeyTbody.appendChild(vikeyRow);
+
+                            // Vikey (Mobile Card)
+                            const vikeyCard = document.createElement('div');
+                            vikeyCard.className = 'mobile-card';
+                            vikeyCard.innerHTML = `
+                                <div class="mobile-card-item"><strong>Date:</strong><span>${item.date}</span></div>
+                                <div class="mobile-card-item"><strong>Model:</strong><span>${item.model}</span></div>
+                                <div class="mobile-card-item"><strong>In/Out Token:</strong><span>${item.input_tokens} / ${item.output_tokens}</span></div>
+                                <div class="mobile-card-item"><strong>Cost:</strong><span>${item.cost}</span></div>
+                                <div class="mobile-card-item"><strong>Endpoint:</strong><span>${item.endpoint}</span></div>
+                                <div class="mobile-card-item"><strong>Status:</strong><span class="status-${statusClass}">${item.status}</span></div>
+                                <div class="mobile-card-item"><strong>Inbox ID:</strong><span>${item.inbox}</span></div>
+                                <div class="mobile-card-item"><strong>Timestamp:</strong><span>${item.timestamp}</span></div>
+                            `;
+                            vikeyMobile.appendChild(vikeyCard);
                         }
                     });
                 })
                 .catch(error => {
                     console.error('Error loading results:', error);
-                    document.getElementById('kuzco-results').innerHTML = '<tr><td colspan="5">Error: <i class="fa-solid fa-spinner fa-spin-pulse"></i> Loading data</td></tr>';
-                    document.getElementById('vikey-results').innerHTML = '<tr><td colspan="9">Error: <i class="fa-solid fa-spinner fa-spin-pulse"></i> Loading data</td></tr>';
+                    const errorMsg = `<tr><td colspan="5">Error loading data. Please check the console.</td></tr>`;
+                    document.getElementById('kuzco-results').innerHTML = errorMsg;
+                    document.getElementById('vikey-results').innerHTML = errorMsg.replace('5', '9');
                 });
         }
 
         loadResults();
-        setInterval(loadResults, 10000); // Update 10s
+        setInterval(loadResults, 10000); // Update every 10 seconds
     </script>
 </body>
 </html>
